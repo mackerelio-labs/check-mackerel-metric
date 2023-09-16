@@ -31,7 +31,7 @@ command = ["check-mackerel-metric", "-H", "HOST_ID", "-n", "METRIC_NAME", "-w", 
 - HOST_ID is displayed at the top of the Mackerel host screen, like `4Hkc5RWzXXX`.
 - METRIC_NAME can be looked up with `mkr metric-names -H HOST_ID`.
 
---
+---
 
 ## 説明
 
