@@ -31,11 +31,10 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
 - `--warning MINUTE, -w MINUTE`: minute to be WARNING
 - `--critical MINUTE, -c MINUTE`: minute to be CRITICAL
 - `--help, -h`: display the help and exit
-
-- `--host` is for host metrics and `--service` is for service metrics. Choose one of these.
-- HOST_ID is displayed at the top of the Mackerel host screen, like `4Hkc5RWzXXX`.
-- METRIC_NAME can be looked up with `mkr metric-names -H HOST_ID`.
-- The API key is taken from the existing mackerel-agent.conf. If you want to use a different API key, you can specify it in the environment variable `MACKEREL_APIKEY`.
+  - `--host` is for host metrics and `--service` is for service metrics. Choose one of these.
+  - HOST_ID is displayed at the top of the Mackerel host screen, like `4Hkc5RWzXXX`.
+  - METRIC_NAME can be looked up with `mkr metric-names -H HOST_ID`.
+  - The API key is taken from the existing mackerel-agent.conf. If you want to use a different API key, you can specify it in the environment variable `MACKEREL_APIKEY`.
 ---
 
 ## 説明
@@ -69,8 +68,7 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
 - `--warning MINUTE, -w MINUTE`: 指定の分数内にメトリックがなければWARNING
 - `--critical MINUTE, -c MINUTE`: 指定の分数内にメトリックがなければCRITICAL
 - `--help, -h`: ヘルプの表示と終了
-
-- `--host`はホストメトリック用、`--service`はサービスメトリック用です。どちらか1つを選んでください。
-- HOST_ID (ホストID) はMackerelのホスト画面の上部に `4Hkc5RWzXXX` のように表示されています。
-- METRIC_NAME (メトリック名) は `mkr metric-names -H HOST_ID` で調べることができます。
-- APIキーは既存のmackerel-agent.confから取得されます。別のAPIキーを利用したいときには、環境変数`MACKEREL_APIKEY`で指定できます。
+  - `--host`はホストメトリック用、`--service`はサービスメトリック用です。どちらか1つを選んでください。
+  - HOST_ID (ホストID) はMackerelのホスト画面の上部に `4Hkc5RWzXXX` のように表示されています。
+  - METRIC_NAME (メトリック名) は `mkr metric-names -H HOST_ID` で調べることができます。
+  - APIキーは既存のmackerel-agent.confから取得されます。別のAPIキーを利用したいときには、環境変数`MACKEREL_APIKEY`で指定できます。
