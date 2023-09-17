@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/jessevdk/go-flags"
+	"github.com/alexflint/go-arg"
 	"github.com/mackerelio/checkers"
 
 	"github.com/mackerelio/mackerel-agent/config"
@@ -14,10 +14,11 @@ import (
 )
 
 type mackerelMetricOpts struct {
-	Host     string `short:"H" long:"host" required:"true" description:"target host ID"`
-	Metric   string `short:"n" long:"name" required:"true" description:"target metric name"`
-	Warning  uint   `short:"w" long:"warning" required:"true" description:"minute to be WARNING"`
-	Critical uint   `short:"c" long:"critical" required:"true" description:"minute to be CRITICAL"`
+	Host     string `arg:"-H,--host" help:"target host ID" placeholder:"HOST_ID"`
+	Service  string `arg:"-s,--service" help:"target service name" placeholder:"SERVICE_NAME"`
+	Metric   string `arg:"-n,--name,required" help:"target metric name" placeholder:"METRIC_NAME"`
+	Warning  uint   `arg:"-w,--warning,required" help:"minute to be WARNING" placeholder:"MINUTE"`
+	Critical uint   `arg:"-c,--critical,required" help:"minute to be CRITICAL" placeholder:"MINUTE"`
 }
 
 func Do() {
@@ -32,20 +33,21 @@ func Do() {
 }
 
 func parseArgs(args []string) (*mackerelMetricOpts, error) {
-	opts := &mackerelMetricOpts{}
-	_, err := flags.ParseArgs(opts, args)
-	if err != nil {
-		return opts, err
-	}
+	var mo mackerelMetricOpts
+	p := arg.MustParse(&mo)
 
-	// more check
-	maxMinute := uint(60*24 + 1) // 24h1m
-	// myError := fmt.Errorf("specified minute is out of range (1-%d)", maxMinute)
-	if opts.Critical < 1 || opts.Warning < 1 || opts.Critical > maxMinute || opts.Warning > maxMinute {
-		return opts, fmt.Errorf("specified minute is out of range (1-%d)", maxMinute)
+	// Set internal limit: 24h1m
+	maxMinute := uint(60*24 + 1)
+	if mo.Critical < 1 || mo.Critical > maxMinute || mo.Warning < 1 || mo.Warning > maxMinute {
+		p.Fail(fmt.Sprintf("specified minute is out of range (1-%d)", maxMinute))
 	}
-
-	return opts, err
+	if mo.Host != "" && mo.Service != "" {
+		p.Fail("both --host and --service cannot be specified")
+	}
+	if mo.Host == "" && mo.Service == "" {
+		p.Fail("either --host or --service is required")
+	}
+	return &mo, nil
 }
 
 func (opts *mackerelMetricOpts) run() *checkers.Checker {
@@ -67,8 +69,10 @@ func (opts *mackerelMetricOpts) run() *checkers.Checker {
 		return checkers.Unknown(fmt.Sprintf("%v", err))
 	}
 
-	// CRITICAL
-	metricValue, err := fetchHostMetricValues(client, opts.Host, opts.Metric, criticalFrom, to)
+	var metricValue []mackerel.MetricValue
+
+	// CRITICAL check
+	metricValue, err = fetchMetricValues(client, opts.Host, opts.Service, opts.Metric, criticalFrom, to)
 	if err != nil {
 		return checkers.Unknown(fmt.Sprintf("%v", err))
 	}
@@ -85,12 +89,12 @@ func (opts *mackerelMetricOpts) run() *checkers.Checker {
 	return checkers.Ok(fmt.Sprintf("metric for %s continues to post", opts.Metric))
 }
 
-func fetchHostMetricValues(client *mackerel.Client, hostID string, metricName string, from int64, to int64) ([]mackerel.MetricValue, error) {
-	metricValue, err := client.FetchHostMetricValues(hostID, metricName, from, to)
-	if err != nil {
-		return nil, err
+func fetchMetricValues(client *mackerel.Client, hostID string, serviceName string, metricName string, from int64, to int64) ([]mackerel.MetricValue, error) {
+	if hostID != "" {
+		return client.FetchHostMetricValues(hostID, metricName, from, to)
+	} else {
+		return client.FetchServiceMetricValues(serviceName, metricName, from, to)
 	}
-	return metricValue, nil
 }
 
 func LoadApibaseFromConfig(conffile string) string {
