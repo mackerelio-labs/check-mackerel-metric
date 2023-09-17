@@ -16,8 +16,8 @@ import (
 type mackerelMetricOpts struct {
 	Host     string `short:"H" long:"host" required:"true" description:"target host ID"`
 	Metric   string `short:"n" long:"name" required:"true" description:"target metric name"`
-	Warning  int    `short:"w" long:"warning" required:"true" description:"minute to be WARNING"`
-	Critical int    `short:"c" long:"critical" required:"true" description:"minute to be CRITICAL"`
+	Warning  uint   `short:"w" long:"warning" required:"true" description:"minute to be WARNING"`
+	Critical uint   `short:"c" long:"critical" required:"true" description:"minute to be CRITICAL"`
 }
 
 func Do() {
@@ -25,6 +25,7 @@ func Do() {
 	if err != nil {
 		os.Exit(1)
 	}
+
 	ckr := opts.run()
 	ckr.Name = "MackerelMetric"
 	ckr.Exit()
@@ -33,6 +34,17 @@ func Do() {
 func parseArgs(args []string) (*mackerelMetricOpts, error) {
 	opts := &mackerelMetricOpts{}
 	_, err := flags.ParseArgs(opts, args)
+	if err != nil {
+		return opts, err
+	}
+
+	// more check
+	maxMinute := uint(60*24 + 1) // 24h1m
+	// myError := fmt.Errorf("specified minute is out of range (1-%d)", maxMinute)
+	if opts.Critical < 1 || opts.Warning < 1 || opts.Critical > maxMinute || opts.Warning > maxMinute {
+		return opts, fmt.Errorf("specified minute is out of range (1-%d)", maxMinute)
+	}
+
 	return opts, err
 }
 
