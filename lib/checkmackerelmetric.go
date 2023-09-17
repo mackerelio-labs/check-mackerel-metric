@@ -69,10 +69,14 @@ func (opts *mackerelMetricOpts) run() *checkers.Checker {
 		return checkers.Unknown(fmt.Sprintf("%v", err))
 	}
 
+	return checkMetric(client, opts, criticalFrom, warningFrom, to)
+}
+
+func checkMetric(client *mackerel.Client, opts *mackerelMetricOpts, criticalFrom int64, warningFrom int64, to int64) *checkers.Checker {
 	var metricValue []mackerel.MetricValue
 
 	// CRITICAL check
-	metricValue, err = fetchMetricValues(client, opts.Host, opts.Service, opts.Metric, criticalFrom, to)
+	metricValue, err := fetchMetricValues(client, opts.Host, opts.Service, opts.Metric, criticalFrom, to)
 	if err != nil {
 		return checkers.Unknown(fmt.Sprintf("%v", err))
 	}
