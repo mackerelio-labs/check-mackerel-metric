@@ -38,6 +38,11 @@ func parseArgs(args []string) (*mackerelMetricOpts, error) {
 	// p := arg.MustParse(&mo)
 	p, _ := arg.NewParser(arg.Config{}, &mo)
 	err := p.Parse(args)
+
+	if err == arg.ErrHelp {
+		p.WriteHelp(os.Stdout)
+		os.Exit(0)
+	}
 	if err != nil {
 		return &mo, err
 	}
