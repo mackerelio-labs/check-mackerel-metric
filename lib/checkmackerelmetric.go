@@ -24,6 +24,7 @@ type mackerelMetricOpts struct {
 func Do() {
 	opts, err := parseArgs(os.Args[1:])
 	if err != nil {
+		fmt.Println(err)
 		os.Exit(1)
 	}
 
@@ -34,20 +35,28 @@ func Do() {
 
 func parseArgs(args []string) (*mackerelMetricOpts, error) {
 	var mo mackerelMetricOpts
-	p := arg.MustParse(&mo)
+	// p := arg.MustParse(&mo)
+	p, _ := arg.NewParser(arg.Config{}, &mo)
+	err := p.Parse(args)
+	if err != nil {
+		return &mo, err
+	}
 
 	// Set internal limit: 24h1m
 	maxMinute := uint(60*24 + 1)
 	if mo.Critical < 1 || mo.Critical > maxMinute || mo.Warning < 1 || mo.Warning > maxMinute {
-		p.Fail(fmt.Sprintf("specified minute is out of range (1-%d)", maxMinute))
+		err = fmt.Errorf("specified minute is out of range (1-%d)", maxMinute)
 	}
 	if mo.Host != "" && mo.Service != "" {
-		p.Fail("both --host and --service cannot be specified")
+		err = fmt.Errorf("both --host and --service cannot be specified")
 	}
 	if mo.Host == "" && mo.Service == "" {
-		p.Fail("either --host or --service is required")
+		err = fmt.Errorf("either --host or --service is required")
 	}
-	return &mo, nil
+	if mo.Critical <= mo.Warning {
+		err = fmt.Errorf("critical minute must be greater than warning minute")
+	}
+	return &mo, err
 }
 
 func (opts *mackerelMetricOpts) run() *checkers.Checker {
