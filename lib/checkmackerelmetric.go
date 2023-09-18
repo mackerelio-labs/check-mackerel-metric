@@ -66,9 +66,14 @@ func parseArgs(args []string) (*mackerelMetricOpts, error) {
 
 func (opts *mackerelMetricOpts) run() *checkers.Checker {
 	apikey := os.Getenv("MACKEREL_APIKEY")
-	apibase := LoadApibaseFromConfig(config.DefaultConfig.Conffile)
+
+	conf, err := config.LoadConfig(config.DefaultConfig.Conffile)
+	if err != nil {
+		return checkers.Unknown(fmt.Sprintf("%v", err))
+	}
+	apibase := conf.Apibase
 	if apikey == "" {
-		apikey = LoadApikeyFromConfig(config.DefaultConfig.Conffile)
+		apikey = conf.Apikey
 	}
 	if apibase == "" || apikey == "" {
 		return checkers.Unknown("Not found apibase or apikey in " + config.DefaultConfig.Conffile)
@@ -113,20 +118,4 @@ func fetchMetricValues(client *mackerel.Client, hostID string, serviceName strin
 	} else {
 		return client.FetchServiceMetricValues(serviceName, metricName, from, to)
 	}
-}
-
-func LoadApibaseFromConfig(conffile string) string {
-	conf, err := config.LoadConfig(conffile)
-	if err != nil {
-		return ""
-	}
-	return conf.Apibase
-}
-
-func LoadApikeyFromConfig(conffile string) string {
-	conf, err := config.LoadConfig(conffile)
-	if err != nil {
-		return ""
-	}
-	return conf.Apikey
 }
