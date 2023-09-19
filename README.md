@@ -35,6 +35,10 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
   - HOST_ID is displayed at the top of the Mackerel host screen, like `4Hkc5RWzXXX`.
   - METRIC_NAME can be looked up with `mkr metric-names -H HOST_ID`.
   - The API key is taken from the existing mackerel-agent.conf. If you want to use a different API key, you can specify it in the environment variable `MACKEREL_APIKEY`.
+
+## License
+Apache License (see LICENSE file)
+
 ---
 
 ## 説明
@@ -72,3 +76,6 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
   - HOST_ID (ホストID) はMackerelのホスト画面の上部に `4Hkc5RWzXXX` のように表示されています。
   - METRIC_NAME (メトリック名) は `mkr metric-names -H HOST_ID` で調べることができます。
   - APIキーは既存のmackerel-agent.confから取得されます。別のAPIキーを利用したいときには、環境変数`MACKEREL_APIKEY`で指定できます。
+
+## ライセンス
+Apache License (LICENSE ファイル参照)
