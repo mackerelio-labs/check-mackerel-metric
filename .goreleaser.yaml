@@ -16,15 +16,9 @@ builds:
       - arm64
 
 archives:
-  - format: tar.gz
+  - format: zip
     # this name template makes the OS and Arch compatible with the results of uname.
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
-    # use zip for windows archives
-    format_overrides:
-    - goos: windows
-      format: zip
-    - goos: darwin
-      format: zip
     files:
     - README.md
     - check-mackerel-metric.png
