@@ -28,8 +28,8 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
 - `--host HOST_ID, -H HOST_ID`: target host ID
 - `--service SERVICE_NAME, -s SERVICE_NAME`: target service name
 - `--name METRIC_NAME, -n METRIC_NAME`: target metric name
-- `--warning MINUTE, -w MINUTE`: minute to be WARNING
-- `--critical MINUTE, -c MINUTE`: minute to be CRITICAL
+- `--warning MINUTE, -w MINUTE`: minute to be WARNING (MINUTE: 1-1441)
+- `--critical MINUTE, -c MINUTE`: minute to be CRITICAL (MINUTE: 1-1441)
 - `--help, -h`: display the help and exit
   - `--host` is for host metrics and `--service` is for service metrics. Choose one of these.
   - HOST_ID is displayed at the top of the Mackerel host screen, like `4Hkc5RWzXXX`.
@@ -69,8 +69,8 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
 - `--host HOST_ID, -H HOST_ID`: 対象のホストID
 - `--service SERVICE_NAME, -s SERVICE_NAME`: 対象のサービス名
 - `--name METRIC_NAME, -n METRIC_NAME`: 対象のメトリック名
-- `--warning MINUTE, -w MINUTE`: 指定の分数内にメトリックがなければWARNING
-- `--critical MINUTE, -c MINUTE`: 指定の分数内にメトリックがなければCRITICAL
+- `--warning MINUTE, -w MINUTE`: 指定の分数内にメトリックがなければWARNING（MINUTEは1〜1441）
+- `--critical MINUTE, -c MINUTE`: 指定の分数内にメトリックがなければCRITICAL（MINUTEは1〜1441）
 - `--help, -h`: ヘルプの表示と終了
   - `--host`はホストメトリック用、`--service`はサービスメトリック用です。どちらか1つを選んでください。
   - HOST_ID (ホストID) はMackerelのホスト画面の上部に `4Hkc5RWzXXX` のように表示されています。

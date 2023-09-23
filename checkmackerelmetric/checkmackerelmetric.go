@@ -17,8 +17,8 @@ type mackerelMetricOpts struct {
 	Host     string `arg:"-H,--host" help:"target host ID" placeholder:"HOST_ID"`
 	Service  string `arg:"-s,--service" help:"target service name" placeholder:"SERVICE_NAME"`
 	Metric   string `arg:"-n,--name,required" help:"target metric name" placeholder:"METRIC_NAME"`
-	Warning  uint   `arg:"-w,--warning,required" help:"minute to be WARNING" placeholder:"MINUTE"`
-	Critical uint   `arg:"-c,--critical,required" help:"minute to be CRITICAL" placeholder:"MINUTE"`
+	Warning  uint   `arg:"-w,--warning,required" help:"minute to be WARNING (MINUTE: 1-1441)" placeholder:"MINUTE"`
+	Critical uint   `arg:"-c,--critical,required" help:"minute to be CRITICAL (MINUTE: 1-1441)" placeholder:"MINUTE"`
 }
 
 func Do() {
@@ -35,7 +35,6 @@ func Do() {
 
 func parseArgs(args []string) (*mackerelMetricOpts, error) {
 	var mo mackerelMetricOpts
-	// p := arg.MustParse(&mo)
 	p, _ := arg.NewParser(arg.Config{}, &mo)
 	err := p.Parse(args)
 
