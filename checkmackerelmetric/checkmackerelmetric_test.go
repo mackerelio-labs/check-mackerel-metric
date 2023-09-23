@@ -15,14 +15,20 @@ import (
 )
 
 func TestParseArgs(t *testing.T) {
-	_, err := parseArgs(strings.Split("-H HOSTID -n METRIC -w 30 -c 60", " "))
-	assert.Equal(t, nil, err, "err should be nil")
+	opts, err := parseArgs(strings.Split("-H HOSTID -n METRIC -w 30 -c 60", " "))
+	assert.Equal(t, nil, err, "parameters with a host should be passed")
+	assert.Equal(t, "HOSTID", opts.Host, "host is passed correctly")
+	assert.Equal(t, "METRIC", opts.Metric, "metric is passed correctly")
+	assert.Equal(t, uint(30), opts.Warning, "warning is passed correctly")
+	assert.Equal(t, uint(60), opts.Critical, "critical is passed correctly")
 
-	_, err = parseArgs(strings.Split("-s SERVICE -n METRIC -w 30 -c 60", " "))
-	assert.Equal(t, nil, err, "err should be nil")
+	opts, err = parseArgs(strings.Split("-s SERVICE -n METRIC -w 30 -c 60", " "))
+	assert.Equal(t, nil, err, "parameters with a service should be passed")
+	assert.Equal(t, "SERVICE", opts.Service, "service is passed correctly")
 
-	_, err = parseArgs(strings.Split("-H HOSTID -n METRIC -w 30 -c 1441", " "))
-	assert.Equal(t, nil, err, "err should be nil")
+	opts, err = parseArgs(strings.Split("-H HOSTID -n METRIC -w 30 -c 1441", " "))
+	assert.Equal(t, nil, err, "parmeters with max minute should be passed")
+	assert.Equal(t, uint(1441), opts.Critical, "1441 minutes (= max minute) is passed correctly")
 
 	_, err = parseArgs(strings.Split("-H HOSTID -n METRIC -w 1441 -c 60", " "))
 	assert.Equal(t, fmt.Errorf("critical minute must be greater than warning minute"), err, "warning can't over critical")
