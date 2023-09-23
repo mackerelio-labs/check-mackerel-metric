@@ -1,5 +1,7 @@
 # check-mackerel-metric
 
+![](check-mackerel-metric.png)
+
 ## Description
 
 Checks Mackerel host metrics (or service metrics) are still being posted.
