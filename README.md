@@ -39,6 +39,8 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
   - The API key is taken from the existing mackerel-agent.conf. If you want to use a different API key, you can specify it in the environment variable `MACKEREL_APIKEY`.
 
 ## License
+© 2023 Hatena Co., Ltd.
+
 Apache License (see LICENSE file)
 
 ---
@@ -80,4 +82,6 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
   - APIキーは既存のmackerel-agent.confから取得されます。別のAPIキーを利用したいときには、環境変数`MACKEREL_APIKEY`で指定できます。
 
 ## ライセンス
+© 2023 Hatena Co., Ltd.
+
 Apache License (LICENSE ファイル参照)
