@@ -17,6 +17,13 @@ check-mackerel-metric -s SERVICE_NAME -n METRIC_NAME -w WARNING_MINUTE -c CRITIC
 CRITICAL (or WARNING) alert is issued if no metric has been posted since the minute specified for CRITICAL_MINUTE (or WARNING_MINUTE) from the current time.
 
 ## Setting for mackerel-agent
+You can install the plugin by `mkr` command.
+```
+sudo mkr plugin install check-mackerel-metric
+```
+
+Add plugin configuration into mackerel-agent.conf.
+
 ```
 [plugin.checks.metric-myhost]
 command = ["check-mackerel-metric", "-H", "HOST_ID", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
@@ -60,6 +67,14 @@ check-mackerel-metric -s SERVICE_NAME -n METRIC_NAME -w WARNING_MINUTE -c CRITIC
 現在時刻から CRITICAL_MINUTE (または WARNING_MINUTE) 分前の間に何もメトリックの投稿がないときに、CRITICAL (または WARNING) アラートが発報されます。
 
 ## mackerel-agentでの設定
+プラグインは `mkr` コマンドでインストールできます。
+
+```
+sudo mkr plugin install check-mackerel-metric
+```
+
+mackerel-agent.conf にプラグインの設定を記述してください。
+
 ```
 [plugin.checks.metric-myhost]
 command = ["check-mackerel-metric", "-H", "HOST_ID", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
