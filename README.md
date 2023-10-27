@@ -2,6 +2,8 @@
 
 ![](check-mackerel-metric.png)
 
+[日本語](#説明)
+
 ## Description
 
 Checks Mackerel host metrics (or service metrics) are still being posted.
