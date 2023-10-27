@@ -57,8 +57,8 @@ func parseArgs(args []string) (*mackerelMetricOpts, error) {
 	if mo.Host == "" && mo.Service == "" {
 		err = fmt.Errorf("either --host or --service is required")
 	}
-	if mo.Critical <= mo.Warning {
-		err = fmt.Errorf("critical minute must be greater than warning minute")
+	if mo.Critical < mo.Warning {
+		err = fmt.Errorf("critical minute must be equal or greater than warning minute")
 	}
 	return &mo, err
 }

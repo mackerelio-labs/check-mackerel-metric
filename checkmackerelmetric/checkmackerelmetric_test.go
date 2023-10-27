@@ -30,11 +30,11 @@ func TestParseArgs(t *testing.T) {
 	assert.Equal(t, nil, err, "parmeters with max minute should be passed")
 	assert.Equal(t, uint(1441), opts.Critical, "1441 minutes (= max minute) is passed correctly")
 
-	_, err = parseArgs(strings.Split("-H HOSTID -n METRIC -w 1441 -c 60", " "))
-	assert.Equal(t, fmt.Errorf("critical minute must be greater than warning minute"), err, "warning can't over critical")
-
 	_, err = parseArgs(strings.Split("-H HOSTID -n METRIC -w 60 -c 60", " "))
-	assert.Equal(t, fmt.Errorf("critical minute must be greater than warning minute"), err, "warning can't over critical, equal is prohibited")
+	assert.Equal(t, nil, err, "it is acceptable for warning and critical to have the same value")
+
+	_, err = parseArgs(strings.Split("-H HOSTID -n METRIC -w 1441 -c 60", " "))
+	assert.Equal(t, fmt.Errorf("critical minute must be equal or greater than warning minute"), err, "warning can't over critical")
 
 	_, err = parseArgs(strings.Split("-H HOSTID", " "))
 	assert.Equal(t, fmt.Errorf("--name is required"), err, "needs metric name")
