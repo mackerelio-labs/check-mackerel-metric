@@ -19,10 +19,11 @@ type mackerelMetricOpts struct {
 	Metric   string `arg:"-n,--name,required" help:"target metric name" placeholder:"METRIC_NAME"`
 	Warning  uint   `arg:"-w,--warning,required" help:"minute to be WARNING (MINUTE: 1-1441)" placeholder:"MINUTE"`
 	Critical uint   `arg:"-c,--critical,required" help:"minute to be CRITICAL (MINUTE: 1-1441)" placeholder:"MINUTE"`
+	StatusAs string `arg:"--status-as" help:"overwrite status=to-status, support multiple comma separates"`
 }
 
 func Do() {
-	opts, err := parseArgs(os.Args[1:])
+	opts, maps, err := parseArgs(os.Args[1:])
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -30,10 +31,10 @@ func Do() {
 
 	ckr := opts.run()
 	ckr.Name = "MackerelMetric"
-	ckr.Exit()
+	ckr.ExitStatusAs(maps)
 }
 
-func parseArgs(args []string) (*mackerelMetricOpts, error) {
+func parseArgs(args []string) (*mackerelMetricOpts, map[checkers.Status]checkers.Status, error) {
 	var mo mackerelMetricOpts
 	p, _ := arg.NewParser(arg.Config{}, &mo)
 	err := p.Parse(args)
@@ -43,7 +44,13 @@ func parseArgs(args []string) (*mackerelMetricOpts, error) {
 		os.Exit(0)
 	}
 	if err != nil {
-		return &mo, err
+		return &mo, nil, err
+	}
+
+	// statusAs option parse
+	maps, err := checkers.ParseStatusMap(mo.StatusAs)
+	if err != nil {
+		return &mo, nil, err
 	}
 
 	// Set internal limit: 24h1m
@@ -60,7 +67,7 @@ func parseArgs(args []string) (*mackerelMetricOpts, error) {
 	if mo.Critical < mo.Warning {
 		err = fmt.Errorf("critical minute must be equal or greater than warning minute")
 	}
-	return &mo, err
+	return &mo, maps, err
 }
 
 func (opts *mackerelMetricOpts) run() *checkers.Checker {
