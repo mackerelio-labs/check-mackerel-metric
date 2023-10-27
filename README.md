@@ -2,7 +2,7 @@
 
 ![](check-mackerel-metric.png)
 
-[日本語][#説明]
+[日本語](#説明)
 
 ## Description
 
