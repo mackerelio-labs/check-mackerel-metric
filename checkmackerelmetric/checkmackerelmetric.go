@@ -25,7 +25,7 @@ var version string
 var revision string
 
 func (mackerelMetricOpts) Version() string {
-	return fmt.Sprintf("Version %s (rev.%s)", version, revision)
+	return fmt.Sprintf("version %s (rev %s)", version, revision)
 }
 
 func Do() {
@@ -45,11 +45,14 @@ func parseArgs(args []string) (*mackerelMetricOpts, error) {
 	p, _ := arg.NewParser(arg.Config{}, &mo)
 	err := p.Parse(args)
 
-	if err == arg.ErrHelp {
+	switch {
+	case err == arg.ErrHelp:
 		p.WriteHelp(os.Stdout)
 		os.Exit(0)
-	}
-	if err != nil {
+	case err == arg.ErrVersion:
+		fmt.Println(mo.Version())
+		os.Exit(0)
+	case err != nil:
 		return &mo, err
 	}
 

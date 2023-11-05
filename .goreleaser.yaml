@@ -16,8 +16,8 @@ builds:
       - arm64
     ldflags:
       - -s -w
-      - -X main.version={{ .Version }}
-      - -X main.revision={{ .ShortCommit }}
+      - -X github.com/mackerelio-labs/check-mackerel-metric/checkmackerelmetric.version={{ .Version }}
+      - -X github.com/mackerelio-labs/check-mackerel-metric/checkmackerelmetric.revision={{ .ShortCommit }}
 
 archives:
   - format: zip
