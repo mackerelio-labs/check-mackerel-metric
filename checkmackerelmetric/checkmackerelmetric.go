@@ -21,6 +21,13 @@ type mackerelMetricOpts struct {
 	Critical uint   `arg:"-c,--critical,required" help:"minute to be CRITICAL (MINUTE: 1-1441)" placeholder:"MINUTE"`
 }
 
+var version string
+var revision string
+
+func (mackerelMetricOpts) Version() string {
+	return fmt.Sprintf("Version %s (rev.%s)", version, revision)
+}
+
 func Do() {
 	opts, err := parseArgs(os.Args[1:])
 	if err != nil {
