@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/alexflint/go-arg v1.4.3
-	github.com/mackerelio/checkers v0.0.4
+	github.com/mackerelio/checkers v0.2.0
 	github.com/mackerelio/mackerel-agent v0.77.1
 	github.com/mackerelio/mackerel-client-go v0.26.0
 	github.com/stretchr/testify v1.7.0
