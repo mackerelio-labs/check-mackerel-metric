@@ -43,6 +43,7 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
 - `--critical MINUTE, -c MINUTE`: minute to be CRITICAL (MINUTE: 1-1441)
 - `--status-as STATUS=NEWSTATUS,[STATUS=NEWSTATUS,...]`: override the status
 - `--help, -h`: display the help and exit
+- `--version`: display version and exit
   - `--host` is for host metrics and `--service` is for service metrics. Choose one of these.
   - HOST_ID is displayed at the top of the Mackerel host screen, like `4Hkc5RWzXXX`.
   - METRIC_NAME can be looked up with `mkr metric-names -H HOST_ID`.
@@ -97,6 +98,7 @@ command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "
 - `--critical MINUTE, -c MINUTE`: 指定の分数内にメトリックがなければCRITICAL（MINUTEは1〜1441）
 - `--status-as STATUS=NEWSTATUS,[STATUS=NEWSTATUS,...]`: 状態の書き換え
 - `--help, -h`: ヘルプの表示と終了
+- `--version`: バージョンの表示と終了
   - `--host`はホストメトリック用、`--service`はサービスメトリック用です。どちらか1つを選んでください。
   - HOST_ID (ホストID) はMackerelのホスト画面の上部に `4Hkc5RWzXXX` のように表示されています。
   - METRIC_NAME (メトリック名) は `mkr metric-names -H HOST_ID` で調べることができます。

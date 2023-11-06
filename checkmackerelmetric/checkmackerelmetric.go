@@ -22,6 +22,13 @@ type mackerelMetricOpts struct {
 	StatusAs string `arg:"--status-as" help:"overwrite status=new_status, support multiple comma separates"`
 }
 
+var version string
+var revision string
+
+func (mackerelMetricOpts) Version() string {
+	return fmt.Sprintf("version %s (rev %s)", version, revision)
+}
+
 func Do() {
 	opts, maps, err := parseArgs(os.Args[1:])
 	if err != nil {
@@ -39,11 +46,14 @@ func parseArgs(args []string) (*mackerelMetricOpts, map[checkers.Status]checkers
 	p, _ := arg.NewParser(arg.Config{}, &mo)
 	err := p.Parse(args)
 
-	if err == arg.ErrHelp {
+	switch {
+	case err == arg.ErrHelp:
 		p.WriteHelp(os.Stdout)
 		os.Exit(0)
-	}
-	if err != nil {
+	case err == arg.ErrVersion:
+		fmt.Println(mo.Version())
+		os.Exit(0)
+	case err != nil:
 		return &mo, nil, err
 	}
 
