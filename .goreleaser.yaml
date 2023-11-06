@@ -7,6 +7,7 @@ before:
 builds:
   - env:
       - CGO_ENABLED=0
+      - PACKAGE_PATH=github.com/mackerelio-labs/check-mackerel-metric/checkmackerelmetric
     goos:
       - linux
       - windows
@@ -16,8 +17,8 @@ builds:
       - arm64
     ldflags:
       - -s -w
-      - -X github.com/mackerelio-labs/check-mackerel-metric/checkmackerelmetric.version={{ .Version }}
-      - -X github.com/mackerelio-labs/check-mackerel-metric/checkmackerelmetric.revision={{ .ShortCommit }}
+      - -X {{ .Env.PACKAGE_PATH }}.version={{ .Version }}
+      - -X {{ .Env.PACKAGE_PATH }}.revision={{ .ShortCommit }}
 
 archives:
   - format: zip
