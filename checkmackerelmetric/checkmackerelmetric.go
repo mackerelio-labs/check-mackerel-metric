@@ -3,6 +3,8 @@ package checkmackerelmetric
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"runtime"
 	"time"
 
 	"github.com/alexflint/go-arg"
@@ -85,7 +87,17 @@ func (opts *mackerelMetricOpts) run() *checkers.Checker {
 
 	conf, err := config.LoadConfig(config.DefaultConfig.Conffile)
 	if err != nil {
-		return checkers.Unknown(fmt.Sprintf("%v", err))
+		if runtime.GOOS == "windows" {
+			newpath := filepath.Join(config.DefaultConfig.Conffile, "../../../mackerel-agent.conf")
+			conf, err = config.LoadConfig(newpath)
+			if err != nil {
+				return checkers.Unknown(fmt.Sprintf("%v", err))
+			}
+			conf.Conffile = newpath
+			conf.Root = filepath.Dir(newpath)
+		} else {
+			return checkers.Unknown(fmt.Sprintf("%v", err))
+		}
 	}
 	apibase := conf.Apibase
 	if apikey == "" {
