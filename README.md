@@ -20,18 +20,37 @@ CRITICAL (or WARNING) alert is issued if no metric has been posted since the min
 
 ## Setting for mackerel-agent
 You can install the plugin by `mkr` command.
+
+##### Linux
 ```
 sudo mkr plugin install check-mackerel-metric
 ```
 
-Add plugin configuration into mackerel-agent.conf.
+##### Windows
+(by Administrator)
 
 ```
+"C:\Program Files\Mackerel\mackerel-agent\mkr.exe" plugin install check-mackerel-metric
+```
+
+Add plugin configuration into mackerel-agent.conf.
+
+##### Linux
+```
 [plugin.checks.metric-myhost]
-command = ["check-mackerel-metric", "-H", "HOST_ID", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
+command = ["/opt/mackerel-agent/plugins/bin/check-mackerel-metric", "-H", "HOST_ID", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
 
 [plugin.checks.metric-myservice]
-command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
+command = ["/opt/mackerel-agent/plugins/bin/check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
+```
+
+##### Windows
+```
+[plugin.checks.metric-myhost]
+command = ["plugins\\bin\\check-mackerel-metric.exe", "-H", "HOST_ID", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
+
+[plugin.checks.metric-myservice]
+command = ["plugins\\bin\\check-mackerel-metric.exe", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
 ```
 
 ## Usage
@@ -75,18 +94,36 @@ check-mackerel-metric -s SERVICE_NAME -n METRIC_NAME -w WARNING_MINUTE -c CRITIC
 ## mackerel-agentでの設定
 プラグインは `mkr` コマンドでインストールできます。
 
+##### Linux
 ```
 sudo mkr plugin install check-mackerel-metric
 ```
 
-mackerel-agent.conf にプラグインの設定を記述してください。
+##### Windows
+(管理者権限)
 
 ```
+"C:\Program Files\Mackerel\mackerel-agent\mkr.exe" plugin install check-mackerel-metric
+```
+
+mackerel-agent.conf にプラグインの設定を記述してください。
+
+##### Linux
+```
 [plugin.checks.metric-myhost]
-command = ["check-mackerel-metric", "-H", "HOST_ID", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
+command = ["/opt/mackerel-agent/plugins/bin/check-mackerel-metric", "-H", "HOST_ID", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
 
 [plugin.checks.metric-myservice]
-command = ["check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
+command = ["/opt/mackerel-agent/plugins/bin/check-mackerel-metric", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
+```
+
+##### Windows
+```
+[plugin.checks.metric-myhost]
+command = ["plugins\\bin\\check-mackerel-metric.exe", "-H", "HOST_ID", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
+
+[plugin.checks.metric-myservice]
+command = ["plugins\\bin\\check-mackerel-metric.exe", "-s", "SERVICE_NAME", "-n", "METRIC_NAME", "-w", "WARNING_MINUTE", "-c", "CRITICAL_MINUTE"]
 ```
 
 ## 使い方
