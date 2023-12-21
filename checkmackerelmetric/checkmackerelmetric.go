@@ -91,12 +91,12 @@ func (opts *mackerelMetricOpts) run() *checkers.Checker {
 			newpath := filepath.Join(config.DefaultConfig.Conffile, "../../../mackerel-agent.conf")
 			conf, err = config.LoadConfig(newpath)
 			if err != nil {
-				return checkers.Unknown(fmt.Sprintf("%v", err))
+				return checkers.Unknown(err.Error())
 			}
 			conf.Conffile = newpath
 			conf.Root = filepath.Dir(newpath)
 		} else {
-			return checkers.Unknown(fmt.Sprintf("%v", err))
+			return checkers.Unknown(err.Error())
 		}
 	}
 	apibase := conf.Apibase
@@ -113,7 +113,7 @@ func (opts *mackerelMetricOpts) run() *checkers.Checker {
 
 	client, err := mackerel.NewClientWithOptions(apikey, apibase, false)
 	if err != nil {
-		return checkers.Unknown(fmt.Sprintf("%v", err))
+		return checkers.Unknown(err.Error())
 	}
 
 	return checkMetric(client, opts, criticalFrom, warningFrom, to)
@@ -125,7 +125,7 @@ func checkMetric(client *mackerel.Client, opts *mackerelMetricOpts, criticalFrom
 	// CRITICAL check
 	metricValue, err := fetchMetricValues(client, opts.Host, opts.Service, opts.Metric, criticalFrom, to)
 	if err != nil {
-		return checkers.Unknown(fmt.Sprintf("%v", err))
+		return checkers.Unknown(err.Error())
 	}
 	if len(metricValue) == 0 {
 		return checkers.Critical(fmt.Sprintf("no metric for %s has been posted since at least %d minutes ago", opts.Metric, opts.Critical))
