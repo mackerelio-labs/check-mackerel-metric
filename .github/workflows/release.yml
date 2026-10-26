@@ -3,6 +3,9 @@ on:
   push:
     tags:
       - "v[0-9]+.[0-9]+.[0-9]+"
+env:
+  # Allow go to fetch the toolchain required by go.mod (>= 1.26.10).
+  GOTOOLCHAIN: auto
 jobs:
   release:
     runs-on: ubuntu-latest

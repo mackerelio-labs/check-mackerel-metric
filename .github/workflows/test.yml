@@ -10,6 +10,9 @@ on:
   pull_request:
 env:
   DEBIAN_FRONTEND: noninteractive
+  # Allow go to fetch the toolchain required by go.mod (>= 1.26.10)
+  # even when setup-go installs an older patch release.
+  GOTOOLCHAIN: auto
 jobs:
   lint:
     runs-on: ubuntu-latest
