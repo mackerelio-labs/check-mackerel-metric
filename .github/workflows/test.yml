@@ -10,9 +10,6 @@ on:
   pull_request:
 env:
   DEBIAN_FRONTEND: noninteractive
-  # Allow go to fetch the toolchain required by go.mod (>= 1.26.10)
-  # even when setup-go installs an older patch release.
-  GOTOOLCHAIN: auto
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -30,4 +27,8 @@ jobs:
       with:
         go-version: ${{ matrix.go }}
         cache: true
+    # setup-go exports GOTOOLCHAIN=local; override it (last GITHUB_ENV write wins)
+    # so go can fetch the toolchain required by go.mod (>= 1.26.10) when the
+    # runner only has an older 1.26 patch.
+    - run: echo "GOTOOLCHAIN=auto" >> "$GITHUB_ENV"
     - run: go test -v ./...
