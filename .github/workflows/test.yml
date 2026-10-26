@@ -26,9 +26,9 @@ jobs:
     - uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
       with:
         go-version: ${{ matrix.go }}
+        # Pull the newest patch in the series from the manifest instead of
+        # reusing the runner's pre-installed Go, so 1.26.x resolves to >= 1.26.10
+        # (what go.mod requires) and GOTOOLCHAIN=local stays satisfied.
+        check-latest: true
         cache: true
-    # setup-go exports GOTOOLCHAIN=local; override it (last GITHUB_ENV write wins)
-    # so go can fetch the toolchain required by go.mod (>= 1.26.10) when the
-    # runner only has an older 1.26 patch.
-    - run: echo "GOTOOLCHAIN=auto" >> "$GITHUB_ENV"
     - run: go test -v ./...
